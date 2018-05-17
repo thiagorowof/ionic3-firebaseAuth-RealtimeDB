@@ -1,14 +1,61 @@
-<ion-header>
-  <ion-navbar>
-    <ion-title>
-      Ionic Blank
-    </ion-title>
-  </ion-navbar>
-</ion-header>
 
 <ion-content padding>
-  The world is your oyster.
-  <p>
-    If you get lost, the <a href="http://ionicframework.com/docs/v2">docs</a> will be your guide.
-  </p>
+  <ion-navbar>
+    <ion-title>
+      TechChat Dados
+    </ion-title>
+  </ion-navbar>
+
+
+  <ion-list>
+    <ion-item>
+      <ion-label color="primary" floating>Nome</ion-label>
+      <ion-input type="text" #pushNome></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label color="primary" floating>SobreNome</ion-label>
+      <ion-input type="text" #pushSobrenome></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label color="primary" floating>Idade</ion-label>
+      <ion-input type="number" #pushIdade></ion-input>
+    </ion-item>
+    <button ion-button color="secondary" (click)="pushPessoaToList(pushNome.value, pushSobrenome.value, pushIdade.value)">Salvar no Firebase</button>
+  </ion-list>
+
+
+  <!-- <ul>
+    <li *ngFor="let pessoa of pessoas | async">
+      <h3>{{ pessoa.nome }}</h3>
+      <p>Key: {{pessoa.key}}</p>
+      <p>Sobrenome: {{ pessoa.sobrenome }}</p>
+      <p>Idade: {{ pessoa.idade }}</p>
+      <button ion-button color="primary" (click)="toggleEditPessoaForm(pessoa.key)">editar</button>
+      <button ion-button color="danger" (click)="removePessoa(pessoa.key)">Remover</button>
+    </li>
+  </ul> -->
+
+  <ion-card *ngFor="let pessoa of pessoas | async">
+    <!-- <img src="https://static.quizur.com/i/b/5a1597a22ee3f2.578549895a1597a219ce36.82350183.png"/> -->
+    <ion-card-content>
+      <ion-card-title>Nome: {{ pessoa.nome }}    Sobrenome: {{ pessoa.sobrenome }}  </ion-card-title>
+      <p>Key: {{pessoa.key}} </p>
+      <p>Idade: {{ pessoa.idade }} </p>
+      <button ion-button color="primary" (click)="toggleEditPessoaForm(pessoa.key)">editar</button>
+      <button ion-button color="danger" (click)="removePessoa(pessoa.key)">Remover</button>
+    </ion-card-content>
+  </ion-card>
+
+  <div class="edit-form" *ngIf="isEditVisible">
+    <form [formGroup]="editPessoaForm" >
+      <input type="text" placeholder="Title" formControlName="title" #setTitle>
+      <input type="text" placeholder="Size" formControlName="size" #setSize>
+      <input type="text" placeholder="Details" formControlName="details" #setDetails>
+      <button (click)="updatePessoa(pessoaKey, setTitle.value, setSize.value, setDetails.value)">Atualizar Pessoa</button>
+      <div (click)="toggleEditPessoaForm()">Remover Pessoa</div>
+    </form>
+  </div>
+
+  <button ion-button color="danger" (click)="removeAll()">Remover todo o banco de pessoas</button>
+
 </ion-content>
